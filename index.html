@@ -1,269 +1,354 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>splitCsv</title>
-    <script src="./jquery-3.6.0.min.js"></script>
-    <script src="./papaparse.min.js"></script>
-    <style>
-      * {
-        padding: 0;
-        margin: 0;
-        font-family: Microsoft YaHei UI;
-      }
-      #content {
-        width: 90%;
-        margin: 0 auto;
-        padding-top: 80px;
-      }
-      h1 {
-        font-size: 30px;
-        color: #333;
-        text-align: center;
-      }
-      #fileUpload {
-        display: none;
-      }
-      .uploadBox {
-        box-sizing: border-box;
-        width: 50%;
-        height: 44px;
-        margin: 60px auto;
-        background-color: #fac797;
-        border: 1px solid #ff7d04;
-        border-radius: 8px;
-        font-size: 16px;
-        color: #ff7d04;
-        text-align: center;
-        line-height: 44px;
-        cursor: pointer;
-      }
-      .btnBox,.resultBox{
-        display: flex;
-        align-items: center;
-        justify-content: space-evenly;
-        width: 100%;
-        margin: 40px auto;
-      }
-      #splitCsv,#replaceText{font-size: 14px;color: #fff;line-height: 36px;text-align: center;padding: 0 20px;background-color: #ff7d04;border: none;border-radius: 4px;cursor: pointer;}
-      .resultBox div{width: 49%;}
-      #beforeObj,#resultObj{width: 100%;}
-    </style>
-  </head>
 
-  <body>
-    <div id="content">
-      <h1>csv Tools</h1>
-      <div class="uploadBox">点击上传csv文件</div>
-      <input id="fileUpload" type="file" accept=".csv" />
-      <div class="btnBox">
-        <button id="splitCsv">拆分csv</button>
-        <button id="replaceText">按照既定替换文本</button>
-      </div>
-      <div class="resultBox">
-        <div>
-          <p>原始数据：</p>
-          <textarea name="输出结果" id="beforeObj" cols="45" rows="30"></textarea>
-        </div>
-        <div>
-          <p>处理结果：</p>
-          <textarea name="输出结果" id="resultObj" cols="45" rows="30"></textarea>
-        </div>
-      </div>
-      
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>splitCsv</title>
+  <script src="./jquery-3.6.0.min.js"></script>
+  <script src="./papaparse.min.js"></script>
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+      font-family: Microsoft YaHei UI;
+    }
+
+    #content {
+      width: 90%;
+      margin: 0 auto;
+      padding-top: 80px;
+    }
+
+    h1 {
+      font-size: 30px;
+      color: #333;
+      text-align: center;
+    }
+
+    #fileUpload {
+      display: none;
+    }
+
+    .uploadBox {
+      box-sizing: border-box;
+      width: 50%;
+      height: 44px;
+      margin: 60px auto;
+      background-color: #fac797;
+      border: 1px solid #ff7d04;
+      border-radius: 8px;
+      font-size: 16px;
+      color: #ff7d04;
+      text-align: center;
+      line-height: 44px;
+      cursor: pointer;
+    }
+
+    .btnBox,
+    .resultBox {
+      display: flex;
+      align-items: center;
+      justify-content: space-evenly;
+      width: 100%;
+      margin: 40px auto;
+    }
+
+    #splitCsv,
+    #replaceText,
+    #clipText {
+      font-size: 14px;
+      color: #fff;
+      line-height: 36px;
+      text-align: center;
+      padding: 0 20px;
+      background-color: #ff7d04;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .resultBox div {
+      width: 49%;
+    }
+
+    #beforeObj,
+    #resultObj {
+      width: 100%;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="content">
+    <h1>csv Tools</h1>
+    <div class="uploadBox">点击上传csv文件</div>
+    <input id="fileUpload" type="file" accept=".csv" />
+    <div class="btnBox">
+      <button id="splitCsv">拆分csv</button>
+      <button id="replaceText">按照既定替换文本</button>
+      <button id="clipText">生成新订单号</button>
     </div>
-    <script>
-      $(document).ready(function () {
-        $(".uploadBox").on("click", function () {
-          $("#fileUpload").click();
-          $("#fileUpload").on("change", function () {
-            var file = $("#fileUpload").prop("files")[0];
-            file.name
-              ? $(".uploadBox").text(file.name)
-              : $(".uploadBox").text("点击上传csv文件");
-          });
-        });
-        $("#splitCsv").click(function (e) {
+    <div class="resultBox">
+      <div>
+        <p>原始数据：</p>
+        <textarea name="输出结果" id="beforeObj" cols="45" rows="30"></textarea>
+      </div>
+      <div>
+        <p>处理结果：</p>
+        <textarea name="输出结果" id="resultObj" cols="45" rows="30"></textarea>
+      </div>
+    </div>
+  </div>
+  <script>
+    $(document).ready(function () {
+      $(".uploadBox").on("click", function () {
+        $("#fileUpload").click();
+        $("#fileUpload").on("change", function () {
           var file = $("#fileUpload").prop("files")[0];
-          Papa.parse(file, {
-            encoding: "gb2312",
-            complete: function (results) {
-              splitCsv(results.data);
-            },
-          });
+          file.name? $(".uploadBox").text(file.name): $(".uploadBox").text("点击上传csv文件");
         });
-        $("#replaceText").click(function (e) {
-          var file = $("#fileUpload").prop("files")[0];
-          Papa.parse(file, {
-            encoding: "gb2312",
-            complete: function (results) {
-              replaceText(results.data);
-            },
-          });
-        });
-        //拆分csv
-        function splitCsv(data) {
-          // 在这里可以使用data数组进行数据处理或显示
-          console.log(data);
-          let oldJson = {};
-          let keyArr = [];
-          let valueArr = [];
-          for (let i = 0; i < data.length; i++) {
-            //csv行数据
-            let obj = data[i];
-            oldJson[obj[0]] = obj[1];
-            //每行数据
-            let idKey = obj[0].split(",");
-            let numValue = obj[1];
-            //循环拆分push到不同数组
-            for (let i = 0; i < idKey.length; i++) {
-              keyArr.push(idKey[i]);
-              valueArr.push(numValue);
-            }
-          }
-          //输出到原始数据框
-          let oldStr = JSON.stringify(oldJson)
-            .replaceAll("{", "")
-            .replaceAll("}", "")
-            .replaceAll('"', "")
-            .replaceAll(",", "\n");
-          $("#beforeObj").val(oldStr);
-          //合并成为新的json对象
-          let newJson = {};
-          for (let i = 0; i < keyArr.length; i++) {
-            newJson[keyArr[i]] = valueArr[i];
-          }
-          //转换为字符串输出到文本域
-          let newStr = JSON.stringify(newJson)
-            .replaceAll("{", "")
-            .replaceAll("}", "")
-            .replaceAll('"', "")
-            .replaceAll(",", "\n");
-          $("#resultObj").val(newStr);
-        }
-        let replaceText = (data) => {
-          let defaultConfig = {
-            "【南航帮扶】阿布丹 新疆黑蜂蜂蜜 280g/瓶": "阿布丹蜂蜜280g",
-            "【南航帮扶】阿布丹 半边梅 400g/罐": "阿布丹半边梅400g",
-            "【南航帮扶】阿布丹 每日坚果 400g/罐": "阿布丹每日坚果400g",
-            "【南航帮扶】阿布丹 开心果 400g/罐": "阿布丹开心果400g",
-            "【南航帮扶】阿布丹 带衣腰果 400g/罐": "阿布丹带衣腰果400g",
-            "【南航帮扶】阿布丹 纸皮核桃 500g/袋": "阿布丹纸皮核桃500g",
-            "【南航帮扶】阿布丹 和田大枣 500g/袋": "阿布丹和田大枣500g",
-            "【南航帮扶】阿布丹 罐装枸杞 400g/罐": "阿布丹枸杞400g",
-            "【南航帮扶】阿布丹 绿香妃葡萄干 400g/罐": "阿布丹绿香妃400g",
-            "【南航帮扶】阿布丹 罐装巴旦木仁 400g/罐": "阿布丹罐装巴旦木仁400g",
-            "【南航帮扶】阿布丹 多彩葡萄干 400g/罐": "阿布丹多彩400g",
-            "阿布丹 多彩葡萄干 400g【强国全国农副优惠品】": "阿布丹多彩400g",
-            "【南航帮扶】阿布丹 巴旦木 300g/罐": "阿布丹奶油巴旦木300g",
-            "【南航帮扶】阿布丹 无花果干 400g/罐": "阿布丹无花果400g",
-            "【南航帮扶】阿布丹 熟鹰嘴豆 500g/罐": "阿布丹熟鹰嘴豆500g",
-            "阿布丹 新疆熟鹰嘴豆 500g【强国全国农副优惠品】":
-              "阿布丹熟鹰嘴豆500g",
-            "【南航帮扶】阿布丹 手剥小白杏核 400g/罐": "阿布丹小银杏400g",
-            "【南航帮扶】阿布丹 葡萄干 400g/罐": "阿布丹罐装葡萄干400g",
-            "【南航帮扶】阿布丹 桑葚干 400g/罐": "阿布丹桑葚干400g",
-            "阿布丹 新疆桑葚干 400g【强国全国农副优惠品】": "阿布丹桑葚干400g",
-            "【南航帮扶】阿布丹 干果组合装A款礼盒 1518g/盒":
-              "阿布丹 干果组合装A款礼盒1518g",
-            "阿布丹 干果组合装A款礼盒1518g【强国全国农副优惠品】":
-              "阿布丹 干果组合装A款礼盒1518g",
-            "【南航帮扶】阿布丹 干果组合装C款礼盒 2400g/盒":
-              "阿布丹 干果组合装C款 2400g",
-            "【南航帮扶】阿布丹 干果组合装B款礼盒 1600g/盒":
-              "阿布丹 干果组合装B款礼盒 1600g/盒",
-            "【南航帮扶】阿布丹 干果组合装D款礼盒 1418g/盒":
-              "阿布丹 干果组合装礼盒D款 1418g",
-            //爱心北京 key：商品ID
-            "84dfef0ec3824b7eb931517878ca8ebf":"阿布丹 干果组合装C款 2400g",
-            "a4e39d312e90494f9802acaabffd79be":"阿布丹 干果组合装A款礼盒1518g",
-            "a497841d8cf04d31a8111e91c495fc0b":"阿布丹蜂蜜280g",
-            "2cad6f1225624c3699a395fceca6ce8e":"阿布丹半边梅400g",
-            "83884e0b09e5472babeddb22f668d5c5":"阿布丹每日坚果400g",
-            "9ca5c24d99ec40b5ac10bb73ec9f564a":"阿布丹开心果400g",
-            "79dbd81cf5e94755a9753e3ed9201e59":"阿布丹带衣腰果400g",
-            "d881765fb21a4226aa35a344a12537ff":"阿布丹和田大枣500g",
-            "9ab6185e3dce4d8f80c6924865fa8e88":"阿布丹纸皮核桃500g",
-            "40c96eb9eb67423395236dc6bf248e77":"阿布丹罐装巴旦木仁400g",
-            "26a1179829344c2ca9d16708437c1668":"阿布丹枸杞400g",
-            "da44e4e8506245888148d45f7511a1e7":"阿布丹绿香妃400g",
-            "868de3dc2932465592e77f166f9eaaa7":"阿布丹无花果400g",
-            "27c308eebbf4490a91d51405f363c5b9":"阿布丹奶油巴旦木300g",
-            "77e3e7a0f30b4631a1be37a591b07820":"阿布丹罐装葡萄干400g",
-            "3bfa18b4715345268fb2f609e4987870":"阿布丹小银杏400g",
-            "dab637d527e44c4a9ab6b46261ab18e4":"阿布丹桑葚干400g",
-            "49315d119fe84976abecad543a1134d0":"阿布丹多彩400g",
-            "1f40c4035ebd4caea703ad1a850101ac":"阿布丹熟鹰嘴豆500g",
-            //三峡e购 key：SKU
-            "ZY0000012468012":"阿布丹熟鹰嘴豆500g",
-            "ZY0000012468129":"阿布丹多彩400g",
-            "ZY0000012468267":"阿布丹桑葚干400g",
-            "ZY0000012468344":"阿布丹小银杏400g",
-            "ZY0000012468439":"阿布丹罐装葡萄干400g",
-            "ZY0000012468672":"阿布丹奶油巴旦木300g",
-            "ZY0000012468793":"阿布丹无花果400g",
-            "ZY0000012468920":"阿布丹绿香妃400g",
-            "ZY0000012469106":"阿布丹枸杞400g",
-            "ZY0000012469214":"阿布丹罐装巴旦木仁400g",
-            "ZY0000012469215":"阿布丹纸皮核桃500g",
-            "ZY0000012469216":"阿布丹和田大枣500g",
-            "ZY0000012469241":"阿布丹带衣腰果400g",
-            "ZY0000012469242":"阿布丹开心果400g",
-            "ZY0000012469243":"阿布丹每日坚果400g",
-            "ZY0000012469244":"阿布丹半边梅400g",
-            "ZY0000012469319":"阿布丹 干果组合装A款礼盒1518g",
-            "ZY0000012469320":"阿布丹 干果组合装B款礼盒 1600g/盒",
-            "ZY0000012469321":"阿布丹 干果组合装C款 2400g",
-            "ZY0000012469322":"阿布丹 干果组合装礼盒D款 1418g",
-            //央企消费帮扶
-            "南航集团 新疆墨玉 阿布丹 葡萄干 400g":"阿布丹罐装葡萄干400g",
-            "南航集团 新疆墨玉 阿布丹 每日坚果 400g":"阿布丹每日坚果400g",
-            "南航集团 新疆墨玉 阿布丹 纸皮核桃 500g":"阿布丹纸皮核桃500g",
-            "南航集团 新疆墨玉 阿布丹 和田大枣 500g":"阿布丹和田大枣500g",
-            "南航集团 新疆墨玉 阿布丹 桑葚干 400g":"阿布丹桑葚干400g",
-            "南航集团 新疆墨玉 阿布丹 巴旦木 300g":"阿布丹奶油巴旦木300g",
-            "南航集团 和田墨玉 阿布丹 干果休闲组合装D款 1600g":"阿布丹 干果休闲组合装D款 1600g",
-            "南航集团 新疆墨玉 阿布丹 枸杞 400g":"阿布丹枸杞400g",
-            "南航集团 新疆墨玉 阿布丹 和田红枣 218g":"阿布丹罐装和田红枣218g",
-            "南航集团 新疆墨玉 阿布丹 熟鹰嘴豆 500g":"阿布丹熟鹰嘴豆500g",
-            "南航集团 新疆墨玉 阿布丹 无花果干 400g":"阿布丹无花果400g",
-            "南航集团 新疆墨玉 阿布丹 巴旦木仁 400g":"阿布丹罐装巴旦木仁400g",
-            "南航集团 新疆墨玉 阿布丹 绿香妃葡萄干 400g":"阿布丹绿香妃400g",
-            "南航集团 新疆墨玉 阿布丹 干果休闲组合B款 2318g":"阿布丹 干果休闲组合B款 2318g",
-            "南航集团 新疆墨玉 阿布丹 琥珀核桃仁 400g":"阿布丹琥珀核桃仁400g",
-            "南航集团 新疆墨玉 阿布丹 干果组合装D款 1418g":"阿布丹 干果组合装礼盒D款 1418g",
-            "南航集团 新疆墨玉 阿布丹 多彩葡萄干 400g":"阿布丹多彩400g",
-            "南航集团 新疆墨玉 阿布丹 手剥小白杏核 400g":"阿布丹小银杏400g",
-            "南航集团 新疆墨玉 阿布丹 每日坚果 400g":"阿布丹每日坚果400g",
-            "南航集团 新疆墨玉 阿布丹 半边梅 400g":"阿布丹半边梅400g",
-            "南航集团 新疆墨玉 阿布丹 桑葚干 400g":"阿布丹桑葚干400g",
-            "南航集团 新疆墨玉 阿布丹 和田大枣 500g":"阿布丹和田大枣500g",
-            "南航集团 新疆墨玉 阿布丹 干果休闲组合装C款 1980g":"阿布丹 干果休闲组合装C款 1980g",
-            "南航集团 新疆墨玉 阿布丹 新疆黑蜂蜂蜜 280g":"阿布丹蜂蜜280g",
-            "南航集团 和田墨玉 阿布丹 罐装带衣腰果 400g":"阿布丹带衣腰果400g",
-            "南航集团 和田墨玉 阿布丹 罐装开心果 400g":"阿布丹开心果400g",
-            "南航集团 和田墨玉  阿布丹 纸皮核桃 500g":"阿布丹纸皮核桃500g",
-            "南航集团 新疆墨玉 阿布丹 干果组合装B款 1600g":"阿布丹 干果组合装B款礼盒 1600g/盒",
-            "南航集团 新疆墨玉 阿布丹 干果组合装C款 2400g":"阿布丹 干果组合装C款 2400g",
-            "南航集团 新疆墨玉 阿布丹 干果组合装D款 1418g":"阿布丹 干果组合装礼盒D款 1418g"
-          };
-          // 在这里可以使用data数组进行数据处理或显示
-          console.log(data);
-          let newArr = [];
-          //输出到原始数据框
-          $("#beforeObj").val(data.join("\n"));
-          for (let i = 0; i < data.length; i++) {
-            let oldStr = data[i];
-            if (defaultConfig[oldStr]) {
-              newArr.push(defaultConfig[oldStr]);
-            } else {
-              newArr.push(oldStr);
-            }
-          }
-          $("#resultObj").val(newArr.join("\n"));
-        };
       });
-    </script>
-  </body>
+      //拆分btn绑定事件
+      $("#splitCsv").click(function (e) {
+        var file = $("#fileUpload").prop("files")[0];
+        Papa.parse(file, {
+          encoding: "gb2312",
+          complete: function (results) {
+            splitCsv(results.data);
+          },
+        });
+      });
+      //替换btn绑定事件
+      $("#replaceText").click(function (e) {
+        var file = $("#fileUpload").prop("files")[0];
+        Papa.parse(file, {
+          encoding: "gb2312",
+          complete: function (results) {
+            replaceText(results.data);
+          },
+        });
+      });
+      //替换btn绑定事件
+      $("#clipText").click(function (e) {
+        var file = $("#fileUpload").prop("files")[0];
+        Papa.parse(file, {
+          encoding: "gb2312",
+          complete: function (results) {
+            clipText(results.data);
+          },
+        });
+      });
+      //拆分csv
+      function splitCsv(data) {
+        // 在这里可以使用data数组进行数据处理或显示
+        console.log(data);
+        let oldJson = {};
+        let keyArr = [];
+        let valueArr = [];
+        for (let i = 0; i < data.length; i++) {
+          //csv行数据
+          let obj = data[i];
+          oldJson[obj[0]] = obj[1];
+          //每行数据
+          let idKey = obj[0].split(",");
+          let numValue = obj[1];
+          //循环拆分push到不同数组
+          for (let i = 0; i < idKey.length; i++) {
+            keyArr.push(idKey[i]);
+            valueArr.push(numValue);
+          }
+        }
+        //输出到原始数据框
+        let oldStr = JSON.stringify(oldJson)
+          .replaceAll("{", "")
+          .replaceAll("}", "")
+          .replaceAll('"', "")
+          .replaceAll(",", "\n");
+        $("#beforeObj").val(oldStr);
+        //合并成为新的json对象
+        let newJson = {};
+        for (let i = 0; i < keyArr.length; i++) {
+          newJson[keyArr[i]] = valueArr[i];
+        }
+        //转换为字符串输出到文本域
+        let newStr = JSON.stringify(newJson)
+          .replaceAll("{", "")
+          .replaceAll("}", "")
+          .replaceAll('"', "")
+          .replaceAll(",", "\n");
+        $("#resultObj").val(newStr);
+      }
+      let replaceText = (data) => {
+        let defaultConfig = {
+          //南粤 key：商品名
+          "【南航帮扶】阿布丹 新疆黑蜂蜂蜜 280g/瓶": "阿布丹蜂蜜280g",
+          "【南航帮扶】阿布丹 半边梅 400g/罐": "阿布丹半边梅400g",
+          "【南航帮扶】阿布丹 每日坚果 400g/罐": "阿布丹每日坚果400g",
+          "【南航帮扶】阿布丹 开心果 400g/罐": "阿布丹开心果400g",
+          "【南航帮扶】阿布丹 带衣腰果 400g/罐": "阿布丹带衣腰果400g",
+          "【南航帮扶】阿布丹 纸皮核桃 500g/袋": "阿布丹纸皮核桃500g",
+          "【南航帮扶】阿布丹 和田大枣 500g/袋": "阿布丹和田大枣500g",
+          "【南航帮扶】阿布丹 罐装枸杞 400g/罐": "阿布丹枸杞400g",
+          "【南航帮扶】阿布丹 绿香妃葡萄干 400g/罐": "阿布丹绿香妃400g",
+          "【南航帮扶】阿布丹 罐装巴旦木仁 400g/罐": "阿布丹罐装巴旦木仁400g",
+          "【南航帮扶】阿布丹 多彩葡萄干 400g/罐": "阿布丹多彩400g",
+          "阿布丹 多彩葡萄干 400g【强国全国农副优惠品】": "阿布丹多彩400g",
+          "【南航帮扶】阿布丹 巴旦木 300g/罐": "阿布丹奶油巴旦木300g",
+          "【南航帮扶】阿布丹 无花果干 400g/罐": "阿布丹无花果400g",
+          "【南航帮扶】阿布丹 熟鹰嘴豆 500g/罐": "阿布丹熟鹰嘴豆500g",
+          "阿布丹 新疆熟鹰嘴豆 500g【强国全国农副优惠品】":
+            "阿布丹熟鹰嘴豆500g",
+          "【南航帮扶】阿布丹 手剥小白杏核 400g/罐": "阿布丹小银杏400g",
+          "【南航帮扶】阿布丹 葡萄干 400g/罐": "阿布丹罐装葡萄干400g",
+          "【南航帮扶】阿布丹 桑葚干 400g/罐": "阿布丹桑葚干400g",
+          "阿布丹 新疆桑葚干 400g【强国全国农副优惠品】": "阿布丹桑葚干400g",
+          "【南航帮扶】阿布丹 干果组合装A款礼盒 1518g/盒":
+            "阿布丹 干果组合装A款礼盒1518g",
+          "阿布丹 干果组合装A款礼盒1518g【强国全国农副优惠品】":
+            "阿布丹 干果组合装A款礼盒1518g",
+          "【南航帮扶】阿布丹 干果组合装C款礼盒 2400g/盒":
+            "阿布丹 干果休闲组合装C款 1980g",
+          "【南航帮扶】阿布丹 干果组合装B款礼盒 1600g/盒":
+            "阿布丹 干果组合装B款礼盒 1600g/盒",
+          "【南航帮扶】阿布丹 干果组合装D款礼盒 1418g/盒":
+            "阿布丹 干果组合装礼盒D款 1418g",
+          //爱心北京 key：商品ID
+          "84dfef0ec3824b7eb931517878ca8ebf": "阿布丹 干果组合装C款 2400g",
+          a4e39d312e90494f9802acaabffd79be: "阿布丹 干果组合装A款礼盒1518g",
+          a497841d8cf04d31a8111e91c495fc0b: "阿布丹蜂蜜280g",
+          "2cad6f1225624c3699a395fceca6ce8e": "阿布丹半边梅400g",
+          "83884e0b09e5472babeddb22f668d5c5": "阿布丹每日坚果400g",
+          "9ca5c24d99ec40b5ac10bb73ec9f564a": "阿布丹开心果400g",
+          "79dbd81cf5e94755a9753e3ed9201e59": "阿布丹带衣腰果400g",
+          d881765fb21a4226aa35a344a12537ff: "阿布丹和田大枣500g",
+          "9ab6185e3dce4d8f80c6924865fa8e88": "阿布丹纸皮核桃500g",
+          "40c96eb9eb67423395236dc6bf248e77": "阿布丹罐装巴旦木仁400g",
+          "26a1179829344c2ca9d16708437c1668": "阿布丹枸杞400g",
+          da44e4e8506245888148d45f7511a1e7: "阿布丹绿香妃400g",
+          "868de3dc2932465592e77f166f9eaaa7": "阿布丹无花果400g",
+          "27c308eebbf4490a91d51405f363c5b9": "阿布丹奶油巴旦木300g",
+          "77e3e7a0f30b4631a1be37a591b07820": "阿布丹罐装葡萄干400g",
+          "3bfa18b4715345268fb2f609e4987870": "阿布丹小银杏400g",
+          dab637d527e44c4a9ab6b46261ab18e4: "阿布丹桑葚干400g",
+          "49315d119fe84976abecad543a1134d0": "阿布丹多彩400g",
+          "1f40c4035ebd4caea703ad1a850101ac": "阿布丹熟鹰嘴豆500g",
+          //三峡e购 key：SKU
+          ZY0000012468012: "阿布丹熟鹰嘴豆500g",
+          ZY0000012468129: "阿布丹多彩400g",
+          ZY0000012468267: "阿布丹桑葚干400g",
+          ZY0000012468344: "阿布丹小银杏400g",
+          ZY0000012468439: "阿布丹罐装葡萄干400g",
+          ZY0000012468672: "阿布丹奶油巴旦木300g",
+          ZY0000012468793: "阿布丹无花果400g",
+          ZY0000012468920: "阿布丹绿香妃400g",
+          ZY0000012469106: "阿布丹枸杞400g",
+          ZY0000012469214: "阿布丹罐装巴旦木仁400g",
+          ZY0000012469215: "阿布丹纸皮核桃500g",
+          ZY0000012469216: "阿布丹和田大枣500g",
+          ZY0000012469241: "阿布丹带衣腰果400g",
+          ZY0000012469242: "阿布丹开心果400g",
+          ZY0000012469243: "阿布丹每日坚果400g",
+          ZY0000012469244: "阿布丹半边梅400g",
+          ZY0000012469319: "阿布丹 干果组合装A款礼盒1518g",
+          ZY0000012469320: "阿布丹 干果组合装B款礼盒 1600g/盒",
+          ZY0000012469321: "阿布丹 干果组合装C款 2400g",
+          ZY0000012469322: "阿布丹 干果组合装礼盒D款 1418g",
+          //央企消费帮扶
+          "南航集团 新疆墨玉 阿布丹 葡萄干 400g": "阿布丹罐装葡萄干400g",
+          "南航集团 新疆墨玉 阿布丹 每日坚果 400g": "阿布丹每日坚果400g",
+          "南航集团 新疆墨玉 阿布丹 纸皮核桃 500g": "阿布丹纸皮核桃500g",
+          "南航集团 新疆墨玉 阿布丹 和田大枣 500g": "阿布丹和田大枣500g",
+          "南航集团 新疆墨玉 阿布丹 桑葚干 400g": "阿布丹桑葚干400g",
+          "南航集团 新疆墨玉 阿布丹 巴旦木 300g": "阿布丹奶油巴旦木300g",
+          "南航集团 和田墨玉 阿布丹 干果休闲组合装D款 1600g":
+            "阿布丹 干果休闲组合装D款 1600g",
+          "南航集团 新疆墨玉 阿布丹 枸杞 400g": "阿布丹枸杞400g",
+          "南航集团 新疆墨玉 阿布丹 和田红枣 218g": "阿布丹罐装和田红枣218g",
+          "南航集团 新疆墨玉 阿布丹 熟鹰嘴豆 500g": "阿布丹熟鹰嘴豆500g",
+          "南航集团 新疆墨玉 阿布丹 无花果干 400g": "阿布丹无花果400g",
+          "南航集团 新疆墨玉 阿布丹 巴旦木仁 400g": "阿布丹罐装巴旦木仁400g",
+          "南航集团 新疆墨玉 阿布丹 绿香妃葡萄干 400g": "阿布丹绿香妃400g",
+          "南航集团 新疆墨玉 阿布丹 干果休闲组合B款 2318g":
+            "阿布丹 干果休闲组合B款 2318g",
+          "南航集团 新疆墨玉 阿布丹 琥珀核桃仁 400g": "阿布丹琥珀核桃仁400g",
+          "南航集团 新疆墨玉 阿布丹 干果组合装D款 1418g":
+            "阿布丹 干果组合装礼盒D款 1418g",
+          "南航集团 新疆墨玉 阿布丹 多彩葡萄干 400g": "阿布丹多彩400g",
+          "南航集团 新疆墨玉 阿布丹 手剥小白杏核 400g": "阿布丹小银杏400g",
+          "南航集团 新疆墨玉 阿布丹 每日坚果 400g": "阿布丹每日坚果400g",
+          "南航集团 新疆墨玉 阿布丹 半边梅 400g": "阿布丹半边梅400g",
+          "南航集团 新疆墨玉 阿布丹 桑葚干 400g": "阿布丹桑葚干400g",
+          "南航集团 新疆墨玉 阿布丹 和田大枣 500g": "阿布丹和田大枣500g",
+          "南航集团 新疆墨玉 阿布丹 干果休闲组合装C款 1980g":
+            "阿布丹 干果休闲组合装C款 1980g",
+          "南航集团 新疆墨玉 阿布丹 新疆黑蜂蜂蜜 280g": "阿布丹蜂蜜280g",
+          "南航集团 和田墨玉 阿布丹 罐装带衣腰果 400g": "阿布丹带衣腰果400g",
+          "南航集团 和田墨玉 阿布丹 罐装开心果 400g": "阿布丹开心果400g",
+          "南航集团 和田墨玉  阿布丹 纸皮核桃 500g": "阿布丹纸皮核桃500g",
+          "南航集团 新疆墨玉 阿布丹 干果组合装B款 1600g":
+            "阿布丹 干果组合装B款礼盒 1600g/盒",
+          "南航集团 新疆墨玉 阿布丹 干果组合装C款 2400g":
+            "阿布丹 干果组合装C款 2400g",
+          "南航集团 新疆墨玉 阿布丹 干果组合装D款 1418g":
+            "阿布丹 干果组合装礼盒D款 1418g",
+        };
+        // 在这里可以使用data数组进行数据处理或显示
+        console.log(data);
+        let newArr = [];
+        //输出到原始数据框
+        $("#beforeObj").val(data.join("\n"));
+        for (let i = 0; i < data.length; i++) {
+          let oldStr = data[i];
+          if (defaultConfig[oldStr]) {
+            newArr.push(defaultConfig[oldStr]);
+          } else {
+            newArr.push(oldStr);
+          }
+        }
+        $("#resultObj").val(newArr.join("\n"));
+      };
+      function clipText(data) {
+        // 在这里可以使用data数组进行数据处理或显示
+        console.log(data);
+        let oldJson = {};
+        let keyArr = [];
+        let valueArr = [];
+        for (let i = 0; i < data.length; i++) {
+          //csv行数据
+          let obj = data[i];
+          oldJson[obj[0]] = obj[1];
+          //每行数据
+          let idKey = obj[0].split(",");
+          let numValue = obj[1];
+          //循环拆分push到不同数组
+          for (let i = 0; i < idKey.length; i++) {
+            keyArr.push(idKey[i]);
+            valueArr.push(numValue);
+          }
+        }
+        //输出到原始数据框
+        let oldStr = JSON.stringify(oldJson)
+          .replaceAll("{", "")
+          .replaceAll("}", "")
+          .replaceAll('"', "")
+          .replaceAll(",", "\n");
+        $("#beforeObj").val(oldStr);
+        //合并成为新的json对象
+        let newJson = {};
+        for (let i = 0; i < keyArr.length; i++) {
+          newJson[keyArr[i]] = valueArr[i] + ":"+keyArr[i]+"A"+i;
+        }
+        //转换为字符串输出到文本域
+        let newStr = JSON.stringify(newJson)
+          .replaceAll("{", "")
+          .replaceAll("}", "")
+          .replaceAll('"', "")
+          .replaceAll(",", "\n");
+        $("#resultObj").val(newStr);
+      }
+    });
+  </script>
+</body>
+
 </html>
