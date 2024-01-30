@@ -311,34 +311,21 @@
       function clipText(data) {
         // 在这里可以使用data数组进行数据处理或显示
         console.log(data);
-        let oldJson = {};
-        let keyArr = [];
-        let valueArr = [];
+        let newJson = {};
         for (let i = 0; i < data.length; i++) {
           //csv行数据
           let obj = data[i];
-          oldJson[obj[0]] = obj[1];
-          //每行数据
-          let idKey = obj[0].split(",");
-          let numValue = obj[1];
-          //循环拆分push到不同数组
-          for (let i = 0; i < idKey.length; i++) {
-            keyArr.push(idKey[i]);
-            valueArr.push(numValue);
-          }
+          let num = obj[0]+"A"+i;
+          newJson[num] = obj[1];
         }
         //输出到原始数据框
-        let oldStr = JSON.stringify(oldJson)
-          .replaceAll("{", "")
-          .replaceAll("}", "")
+        let oldStr = JSON.stringify(data)
+          .replaceAll("[", "")
           .replaceAll('"', "")
-          .replaceAll(",", "\n");
+          .replaceAll("],", "\n")
+          .replaceAll(",", "->")
+          .replaceAll("]]", "");
         $("#beforeObj").val(oldStr);
-        //合并成为新的json对象
-        let newJson = {};
-        for (let i = 0; i < keyArr.length; i++) {
-          newJson[keyArr[i]] = valueArr[i] + ":"+keyArr[i]+"A"+i;
-        }
         //转换为字符串输出到文本域
         let newStr = JSON.stringify(newJson)
           .replaceAll("{", "")
