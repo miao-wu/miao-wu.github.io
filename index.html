@@ -56,7 +56,8 @@
 
     #splitCsv,
     #replaceText,
-    #clipText {
+    #clipText,
+    #clipOrder {
       font-size: 14px;
       color: #fff;
       line-height: 36px;
@@ -88,6 +89,7 @@
       <button id="splitCsv">拆分csv</button>
       <button id="replaceText">按照既定替换文本</button>
       <button id="clipText">生成新订单号</button>
+      <button id="clipOrder">拆单(爱心北京)</button>
     </div>
     <p style="text-align: center;">
       名称替换使用文本：
@@ -118,7 +120,7 @@
           file.name? $(".uploadBox").text(file.name): $(".uploadBox").text("点击上传csv文件");
         });
       });
-      //拆分btn绑定事件
+      //拆分csv
       $("#splitCsv").click(function (e) {
         var file = $("#fileUpload").prop("files")[0];
         Papa.parse(file, {
@@ -138,13 +140,23 @@
           },
         });
       });
-      //替换btn绑定事件
+      //生成新单号
       $("#clipText").click(function (e) {
         var file = $("#fileUpload").prop("files")[0];
         Papa.parse(file, {
           encoding: "gb2312",
           complete: function (results) {
             clipText(results.data);
+          },
+        });
+      });
+      //拆单
+      $("#clipOrder").click(function (e) {
+        var file = $("#fileUpload").prop("files")[0];
+        Papa.parse(file, {
+          encoding: "gb2312",
+          complete: function (results) {
+            clipOrder(results.data);
           },
         });
       });
@@ -478,6 +490,32 @@
           .replaceAll("}", "")
           .replaceAll('"', "")
           .replaceAll(",", "\n");
+        $("#resultObj").val(newStr);
+      };
+      function clipOrder(data) {
+        // console.log(data);
+        let arrayData = [];
+        for (let i = 0; i < data.length; i++) {
+          //csv行数据
+          let obj = data[i];
+          let num = obj.length-1;
+          console.log(num);
+          let col = obj[num].split(",");
+          for (let i = 0; i < col.length; i++) {
+            arrayData.push(col[i] +","+obj);
+          }; 
+        };
+        //输出到原始数据框
+        let oldStr = JSON.stringify(data)
+          .replaceAll("[", "")
+          .replaceAll('"', "")
+          .replaceAll("],", "\n")
+          .replaceAll(",", ",")
+          .replaceAll("]]", "");
+        $("#beforeObj").val(oldStr);
+        //转换为字符串输出到文本域
+        let newStr = arrayData.join(";")
+          .replaceAll(";", "\n");
         $("#resultObj").val(newStr);
       }
     });
