@@ -694,8 +694,8 @@
       //按照平台配置信息矩阵返回对应的数组 
       let creatTab = (arr,obj) =>{
         let tableCsv  =  ["订单编号","客户网名","收货人","电话","州省","区市","区县","地址","客服备注","客户备注","编号","品名"," "," ","数量","合计"];
-        for (let i = 0; i < arr.length; i++) {
-          let j = i+1;
+        for (let i = 1; i < arr.length; i++) {
+          let j = i;
           let tabArr = ptConfig[obj];
           if (arr[j] !== undefined && arr[j].length > 0) {
             let row = arr[j];
