@@ -708,7 +708,7 @@
       //好物购制单
       let creatCsvTab  =  (arr)=>{
         let CsvTab  =  [["订单编号","客户网名","收货人","电话","州省","区市","区县","地址","客服备注","客户备注","编号","品名"," "," ","数量","合计"]];
-          for (let i = 0; i < arr.length-1; i++) {
+          for (let i = 0; i < arr.length; i++) {
           let obj = arr[i][10];
           if (obj !== undefined && obj.length > 0) {
             let spArr  =  obj.split(",");
