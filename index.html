@@ -88,22 +88,20 @@
     <div class="uploadBox">点击上传csv文件</div>
     <input id="fileUpload" type="file" accept=".csv" />
     <div class="btnBox">
-      <button id="splitCsv">拆分回传快递单号（测试版）</button>
-      <button id="replaceText">替换商品名称（测试版）</button>
+      <button id="splitCsv">拆分回传快递单号</button>
+      <button id="replaceText">替换商品名称</button>
       <!-- <button id="clipText">生成新订单号</button> -->
       <!-- <button id="clipOrder">拆单(爱心北京)</button> -->
-      <button id="clipHwg">拆单-好物购（测试版）</button>
-      <button id="hwgCreatCsv">制单-好物购（测试版）</button>
+      <button id="clipHwg">拆单-好物购</button>
+      <button id="hwgCreatCsv">制单-好物购</button>
     </div>
     <p style="display: flex;justify-content: center; text-align: left;">
-      系统为测试版本，还需经过严格测试，功能失效时间：2025.1.16 20:00:00
-      <br>
-      ①拆分回传快递单号（测试版）：（表格数据：订单号|快递单号）<br>
-      ②替换商品名称（测试版）：(表格数据:单列) 南粤：SKUID；爱心北京：商品ID；三峡e购：商品编号；央企消费帮扶：商品名称；小南直选：商品名称；粤工惠购：商品名称；茶觉文化-中信：商品名称；<br>
+      ①拆分回传快递单号：（表格数据：订单号|快递单号）<br>
+      ②替换商品名称：(表格数据:单列) 南粤：SKUID；爱心北京：商品ID；三峡e购：商品编号；央企消费帮扶：商品名称；小南直选：商品名称；粤工惠购：商品名称；茶觉文化-中信：商品名称；<br>
       <!-- ③生成新订单号:（表格数据：订单号|商品名称）<br> -->
-      ③拆单-好物购（测试版）：物流模板原表格上传,在最后插入新订单号，商品名称，数量，自动下载表格<br>
-      ④制单-好物购（测试版）：将拆单的文件直接上传一键制单
-      
+      ③拆单-好物购：物流模板原表格上传,在最后插入新订单号，商品名称，数量，自动下载表格<br>
+      ④制单-好物购：将拆单的文件直接上传一键制单<br>
+      ⑤生成新单号：(表格数据:订单号)上传文件后点击制单
     </p>
     <div class="resultBox">
       <div>
@@ -585,8 +583,8 @@
         "零食礼包一": "阿布丹核桃玛仁什锦装 380g,阿布丹熟鹰嘴豆500g,阿布丹多彩400g,阿布丹桑葚干400g,阿布丹去皮红枣500g,阿布丹琥珀核桃仁400g",
         "零食礼包九": "阿布丹带衣腰果400g,阿布丹去皮红枣500g,阿布丹蜂蜜280g,阿布丹 核桃玛仁酥480g,阿布丹琥珀核桃仁400g",
         "零食礼包八": "阿布丹去皮红枣500g,阿布丹核桃玛仁原味 228g,阿布丹奶油巴旦木300g",
-        "零食礼包五": "阿布丹核桃玛仁玫瑰味 228g,阿布丹琥珀核桃仁400g,阿布丹多彩400g",
         "零食礼包十": "阿布丹去皮红枣500g,阿布丹核桃玛仁玫瑰味 228g,阿布丹奶油巴旦木300g",
+        "零食礼包五": "阿布丹核桃玛仁玫瑰味 228g,阿布丹琥珀核桃仁400g,阿布丹多彩400g",
         "阿布丹 核桃玛仁酥 480g/罐": "阿布丹 核桃玛仁酥480g",
         "阿布丹新疆去皮无核枣 500g/罐": "阿布丹去皮红枣500g",
         "库尔勒香梨 5kg/箱": "库尔勒香梨 5kg/箱",
@@ -768,24 +766,6 @@
           .replaceAll("]]", "");
         $("#resultObj").val(newStr);
       };
-      let changeE = ()=>{
-        // 目标时间：2025年1月15日20:00:00
-        let targetTime = new Date('2025-01-16T20:00:00').getTime();
-
-        // 获取当前时间的时间戳
-        let currentTime = new Date().getTime();
-
-        // 计算时间差（毫秒）
-        let timeDifference = targetTime - currentTime;
-        
-        if (timeDifference<=0) {
-          $("#splitCsv").unbind("click").css({"background":"#999","color":"#fff"}).text("拆分回传快递单号（功能已失效）")
-          $("#replaceText").unbind("click").css({"background":"#999","color":"#fff"}).text("替换商品名称（功能已失效）")
-          $("#clipHwg").unbind("click").css({"background":"#999","color":"#fff"}).text("拆单-好物购（功能已失效）")
-          $("#hwgCreatCsv").unbind("click").css({"background":"#999","color":"#fff"}).text("制单-好物购（功能已失效）")
-          $(".uploadBox").unbind("click").css({"background":"#999","color":"#fff"}).text("点击上传csv文件（功能已失效）") 
-        }
-      }
     });
   </script>
 </body>
