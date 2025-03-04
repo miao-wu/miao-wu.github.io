@@ -1,0 +1,174 @@
+* {
+  padding: 0;
+  margin: 0;
+  font-family: Microsoft YaHei UI;
+}
+
+#content {
+  width: 90%;
+  margin: 0 auto;
+  padding-top: 80px;
+}
+
+h1 {
+  font-size: 30px;
+  color: #333;
+  text-align: center;
+}
+
+#fileUpload {
+  display: none;
+}
+
+.uploadBox {
+  box-sizing: border-box;
+  width: 50%;
+  height: 44px;
+  margin: 60px auto;
+  background-color: rgb(220, 215, 241);
+  border: 1px solid #4e6ef2;
+  border-radius: 8px;
+  font-size: 16px;
+  color: #4e6ef2;
+  text-align: center;
+  line-height: 44px;
+  cursor: pointer;
+}
+
+.platform-select {
+  width: 200px;
+  padding: 8px;
+  display: block;
+  border: 1px solid #4e6ef2;
+  border-radius: 4px;
+}
+
+.btnBox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#platformSelect {
+  border-radius: 4px 0 0 4px;
+}
+
+.platform-select {
+  width: 200px;
+  padding: 8px;
+  border: 1px solid #4e6ef2;
+  border-radius: 4px;
+}
+
+#generateCsv {
+  font-size: 14px;
+  color: #fff;
+  line-height: 36px;
+  padding: 0 20px;
+  background-color: #4e6ef2;
+  border: none;
+  border-radius: 0 4px 4px 0;
+  cursor: pointer;
+}
+
+.resultBox {
+  display: flex;
+  justify-content: space-between;
+  margin: 40px auto;
+}
+
+textarea {
+  width: 100%;
+  height: 400px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: none;
+}
+
+/* 表格容器样式 */
+.table-container {
+  width: 48%;
+  height: 600px;
+  background: #fff;
+  padding: 12px;
+  border-radius: 8px;
+  border: 0.8px solid #999999;
+  box-shadow: 0 2px 12px rgba(78, 110, 242, 0.1);
+  overflow: auto;
+}
+
+/* 表格全局样式 */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: auto;
+}
+
+#beforeTable,
+#resultTable {
+  overflow: auto;
+}
+
+/* 修改所有resultTable选择器为同时包含两个表格 */
+#beforeTable thead tr,
+#resultTable thead tr {
+  background-color: #4e6ef2;
+}
+
+#beforeTable th,
+#resultTable th {
+  color: #fff;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 10px 8px;
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+#beforeTable td,
+#resultTable td {
+  font-size: 11px;
+  padding: 8px;
+  border: 1px solid #e8e8e8;
+  background: #fff;
+  line-height: 1.4;
+}
+
+#beforeTable tr:nth-child(even) td,
+#resultTable tr:nth-child(even) td {
+  background-color: #f8faff;
+}
+
+#beforeTable tr:hover td,
+#resultTable tr:hover td {
+  background-color: #f0f5ff !important;
+  box-shadow: 0 2px 4px rgba(78, 110, 242, 0.08);
+}
+
+#beforeTable td,
+#resultTable td {
+  min-width: 24px;
+  max-width: 400px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+/* 新增按钮样式 */
+.btn-group {
+  display: flex;
+  gap: 40px;
+  margin: 0 0 0 40px;
+}
+.btn {
+  line-height: 36px;
+  padding: 0 20px;
+  background: #4e6ef2;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
