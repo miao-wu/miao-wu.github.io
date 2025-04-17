@@ -237,6 +237,9 @@ $(document).ready(function () {
                 "17681078": "阿布丹桑葚干400g,阿布丹熟鹰嘴豆500g",
                 "20314756": "阿布丹去皮红枣500g",
                 "20312548": "阿布丹 核桃玛仁酥480g",
+                "21561861": "阿布丹混合坚果400g",
+                "21267354": "阿布丹新疆粗粮薄盐三色豆400g",
+                "21561887": "阿布丹新疆灰枣280g",
             },
             template: [
                 "订单编号", "客户网名", "收货人", "电话", "州省",
@@ -552,18 +555,18 @@ $(document).ready(function () {
             columnMap: {
                 orderId: 1,       // 订单编号
                 customerName: 0,  // 客户网名
-                receiver: 17,     // 收货人
-                phone: 18,        // 电话
+                receiver: 20,     // 收货人
+                phone: 21,        // 电话
                 province: 0,      // 州省
                 city: 0,          // 区市
                 county: 0,        // 区县
-                address: 19,      // 地址
+                address: 22,      // 地址
                 serviceNote: 0,   // 客服备注
                 customerNote: 0,  // 客户备注
-                skuId: 2,        // 编号
+                skuId: 11,        // 编号
                 productName: 0,  // 品名
-                quantity: 6,      // 数量
-                total: 6          // 合计
+                quantity: 13,      // 数量
+                total: 13          // 合计
             },
             fixedValues: {
                 1: "阿布丹",
@@ -577,7 +580,7 @@ $(document).ready(function () {
                 13: ""
             },
             productMap: {
-                //中汇豪泰 商品编号=>名称
+                //好品 商品SKU编号=>名称
                 "746918": "阿布丹核桃玛仁原味 228g",
                 "746917": "阿布丹核桃玛仁葡萄味 228g",
                 "620369": "阿布丹核桃玛仁芝麻味 228g",
