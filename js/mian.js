@@ -103,7 +103,7 @@ $(document).ready(function () {
                 province: 0,      // 州省
                 city: 0,          // 区市
                 county: 0,        // 区县
-                address: 16,      // 地址
+                address: 17,      // 地址
                 serviceNote: 0,   // 客服备注
                 customerNote: 18,  // 客户备注
                 skuId: 24,        // 编号
