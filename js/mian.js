@@ -29,7 +29,7 @@ $(document).ready(function () {
                 "platformOrderNumber": 2,      // 订单编号
                 "recipientName": 15,           // 收货人
                 "recipientMobilePhone": 16,    // 电话
-                "recipientAddress": 17,        // 地址
+                "recipientAddress": 20,        // 地址
                 "merchantCode": 6,             // 商家编码
                 // "productInfo": 0,              // 货品信息
                 // "specifications": 0,           // 规格信息
