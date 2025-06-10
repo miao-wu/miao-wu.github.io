@@ -325,7 +325,7 @@ $(document).ready(function () {
                 "platformOrderNumber": 0,      // 订单编号
                 "recipientName": 23,           // 收货人
                 "recipientMobilePhone": 24,    // 电话
-                "recipientAddress": 26,        // 地址
+                "recipientAddress": 28,        // 地址
                 "merchantCode": 5,             // 商品名称
                 "quantity": 16,                 // 数量
             },
