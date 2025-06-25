@@ -382,7 +382,7 @@ $(document).ready(function () {
             },
             fixedValues: {
                 11: "阿布丹",
-                13: "xchp",
+                13: "xchp（发顺丰）",
             },
             productMap: {
                 //好品 商品SKU编号=>名称
