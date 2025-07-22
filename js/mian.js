@@ -27,13 +27,13 @@ $(document).ready(function () {
             name: "南粤平台",
             columnMap: {
                 "platformOrderNumber": 2,      // 订单编号
-                "recipientName": 15,           // 收货人
-                "recipientMobilePhone": 16,    // 电话
-                "recipientAddress": 20,        // 地址
+                "recipientName": 16,           // 收货人
+                "recipientMobilePhone": 17,    // 电话
+                "recipientAddress": 21,        // 地址
                 "merchantCode": 6,             // 商家编码
                 // "productInfo": 0,              // 货品信息
                 // "specifications": 0,           // 规格信息
-                "quantity": 10,                 // 数量
+                "quantity": 11,                 // 数量
                 // "unitPrice": 0,                // 货品单价
                 // "subtotal": 0,                 // 金额小计
                 // "postageIncome": 0,            // 邮费收入
@@ -89,6 +89,7 @@ $(document).ready(function () {
                 "67137508": "阿布丹核桃玛仁什锦装 380g",
                 "67578006": "阿布丹 核桃玛仁酥480g",
                 "67578007": "阿布丹去皮红枣500g",
+                "68889625": "阿布丹新疆核桃仁300g",
             },
             template: [
                 "平台订单号", "收件人姓名", "收件人手机号/电话", "收件人地址", "商家编码", "货品信息", "规格信息", "货品数量", "货品单价", "金额小计", "邮费收入", "店铺", "买家留言", "客服备注", "买家昵称", "主播ID", "主播名称", "业务员", "付款类型"
