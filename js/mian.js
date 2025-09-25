@@ -733,6 +733,8 @@ $(document).ready(function () {
         "阿布丹 核桃玛仁什锦装 380g/袋": "阿布丹核桃玛仁什锦装 380g",
         "阿布丹 枸杞 400g/罐": "阿布丹枸杞400g",
         "阿布丹 巴旦木仁 300g/罐": "阿布丹罐装巴旦木仁400g",
+        "阿布丹干果组合装1980g/盒":"阿布丹干果组合装1980g/盒红色（阿布丹带衣腰果400g，阿布丹和田大枣500g，阿布丹开心果400g，阿布丹无花果400g，阿布丹灰枣280g）",
+
     };
     //拆单-好物购
     $("#hwgSplit").click(function (e) {
@@ -779,7 +781,7 @@ $(document).ready(function () {
         downloadLink.remove();
     };
     let tableCsvHeader = ["订单编号", "客户网名", "收货人", "电话", "州省", "区市", "区县", "地址", "客服备注", "客户备注", "编号", "品名", " ", " ", "数量", "合计"];
-    let ptConfig = { "hwg": [0, 6, 7, 8, 11, 12, 12] };
+    let ptConfig = { "hwg": [0, 20, 21, 22, 18, 19, 19] };
     //按照平台配置信息矩阵返回对应的数组 
     let creatTab = (arr, obj) => {
         let tableCsv = ["订单编号", "客户网名", "收货人", "电话", "州省", "区市", "区县", "地址", "客服备注", "客户备注", "编号", "品名", " ", " ", "数量", "合计"];
@@ -788,7 +790,7 @@ $(document).ready(function () {
             let tabArr = ptConfig[obj];
             if (arr[j] !== undefined && arr[j].length > 0) {
                 let row = arr[j];
-                let tableRowStr = row[0] + "A" + i + "|" + "阿布丹|" + row[6] + "|" + row[7] + "|" + "  |" + "  |" + "  |" + row[8] + "|" + obj + "|  |" + defaultConfig[row[11]] + "|" + "  |" + "  |" + "  |" + row[12] + "|" + row[12];
+                let tableRowStr = row[0] + "A" + i + "|" + "阿布丹|" + row[20] + "|" + row[21] + "|" + "  |" + "  |" + "  |" + row[22] + "|" + obj + "|  |" + defaultConfig[row[18]] + "|" + "  |" + "  |" + "  |" + row[19] + "|" + row[19];
                 tableCsv.push(tableRowStr.split("|"));
             };
         };
